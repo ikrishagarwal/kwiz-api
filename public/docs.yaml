@@ -1,0 +1,210 @@
+openapi: "3.0.3"
+
+info:
+  title: Kwiz API
+  version: "1.0"
+  description: API for Kwiz platform
+
+servers:
+  - url: http://localhost:3000/api
+
+components:
+  schemas:
+    Kwizes:
+      type: object
+      properties:
+        questions:
+          type: array
+          items:
+            type: object
+            properties:
+              question:
+                type: string
+              optionA:
+                type: string
+              optionB:
+                type: string
+              optionC:
+                type: string
+              optionD:
+                type: string
+            required:
+              - question
+              - optionA
+              - optionB
+      required:
+        - questions
+
+    Kwiz:
+      type: object
+      properties:
+        kwiz_id:
+          type: string
+        id:
+          type: string
+        question:
+          type: string
+        optionA:
+          type: string
+        optionB:
+          type: string
+        optionC:
+          type: string
+        optionD:
+          type: string
+
+    KwizResponse:
+      type: object
+      properties:
+        questions:
+          type: array
+          items:
+            type: object
+            properties:
+              question:
+                type: string
+              optionA:
+                type: string
+              optionB:
+                type: string
+              optionC:
+                type: string
+              optionD:
+                type: string
+        kwiz_id:
+          type: string
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+paths:
+  /auth:
+    description: Get a JWT token for user authentication and also creates a new user if it doesn't exists already
+    post:
+      summary: Authenticate user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+      responses:
+        "200":
+          description: Successful authentication
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  email:
+                    type: string
+                    format: email
+                  token:
+                    type: string
+                    format: jwt
+        "201":
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  email:
+                    type: string
+                    format: email
+                  token:
+                    type: string
+                    format: jwt
+        "401":
+          description: Invalid credentials
+        "400":
+          description: Bad request
+  /kwizes:
+    description: Get all kwizes for a user
+    get:
+      summary: Get kwizes for a user
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Insufficient data
+        "500":
+          description: Internal server error
+    post:
+      summary: Create a new kwiz
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Kwizes"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  questions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        question:
+                          type: string
+                        optionA:
+                          type: string
+                        optionB:
+                          type: string
+                        optionC:
+                          type: string
+                        optionD:
+                          type: string
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal server error
+
+  /kwizes/{id}:
+    get:
+      description: "Get a specific Kwiz by ID"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+
+      security:
+        - bearerAuth: []
+
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Kwiz"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "500":
+          description: Internal server error
