@@ -49,6 +49,22 @@ export class KwizStore {
     }
   }
 
+  async addQuestion(kwizId: string, q: Question): Promise<Question> {
+    try {
+      const { question, optionA, optionB, optionC, optionD } = q;
+      const conn = await db.connect();
+      const result = await conn.query(
+        "INSERT INTO questions (kwiz_id, id, question, option_a, option_b, option_c, option_d) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id, question, option_a AS optionA, option_b AS optionB, option_c AS optionC, option_d AS optionD",
+        [kwizId, nanoid(), question, optionA, optionB, optionC, optionD]
+      );
+      conn.release();
+
+      return result.rows[0];
+    } catch (error) {
+      throw new Error(`Unable to add question to Kwiz: ${error}`);
+    }
+  }
+
   async getAll(userid: string): Promise<Kwiz[]> {
     try {
       const conn = await db.connect();
@@ -91,6 +107,16 @@ export class KwizStore {
       return result.rows;
     } catch (error) {
       throw new Error(`Unable to retrieve Kwiz by ID: ${error}`);
+    }
+  }
+
+  async deleteById(id: string): Promise<void> {
+    try {
+      const conn = await db.connect();
+      await conn.query("DELETE FROM kwizes WHERE id = ($1)", [id]);
+      conn.release();
+    } catch (error) {
+      throw new Error(`Unable to delete Kwiz by ID: ${error}`);
     }
   }
 }

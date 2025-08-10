@@ -74,6 +74,38 @@ components:
         kwiz_id:
           type: string
 
+    QuestionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        kwiz_id:
+          type: string
+        question:
+          type: string
+        optionA:
+          type: string
+        optionB:
+          type: string
+        optionC:
+          type: string
+        optionD:
+          type: string
+
+    Question:
+      type: object
+      properties:
+        question:
+          type: string
+        optionA:
+          type: string
+        optionB:
+          type: string
+        optionC:
+          type: string
+        optionD:
+          type: string
+
   securitySchemes:
     bearerAuth:
       type: http
@@ -206,5 +238,61 @@ paths:
           description: Unauthorized
         "403":
           description: Forbidden
+        "500":
+          description: Internal server error
+
+    delete:
+      description: "Delete a specific Kwiz by ID"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+
+      security:
+        - bearerAuth: []
+
+      responses:
+        "204":
+          description: Deleted Successfully
+        "401":
+          description: Unauthorized
+        "404":
+          description: Kwiz not found
+        "500":
+          description: Internal server error
+
+    post:
+      description: "Add a question to a Kwiz by ID"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+
+      security:
+        - bearerAuth: []
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Question"
+
+      responses:
+        "201":
+          description: Question added successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuestionResponse"
+        "400":
+          description: Missing required fields
+        "401":
+          description: Unauthorized
+        "404":
+          description: Kwiz not found
         "500":
           description: Internal server error
