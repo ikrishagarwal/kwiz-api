@@ -39,21 +39,16 @@ export default async function (
           .end();
       }
     } else {
-      const createdUser = await store.create(email, password);
-      const token = store.generateToken(createdUser);
-
-      return response //
-        .status(201)
-        .json({ email: createdUser.email, token })
+      response //
+        .status(404)
+        .json({ error: "User not found" })
         .end();
+      return;
     }
   } catch {
-    const user = await store.create(email, password);
-    const token = store.generateToken(user);
-
     return response //
-      .status(201)
-      .json({ email: user.email, token })
+      .status(500)
+      .json({ error: "Internal server error" })
       .end();
   }
 

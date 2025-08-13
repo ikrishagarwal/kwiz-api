@@ -65,6 +65,50 @@ export class KwizStore {
     }
   }
 
+  async deleteQuestionById(questionId: string) {
+    try {
+      const conn = await db.connect();
+      await conn.query("DELETE FROM questions WHERE id = ($1)", [questionId]);
+      conn.release();
+    } catch (error) {
+      throw new Error(`Unable to delete question by ID: ${error}`);
+    }
+  }
+
+  async getQuestionById(questionId: string): Promise<QuestionResponse | null> {
+    try {
+      const conn = await db.connect();
+      const result = await conn.query(
+        "SELECT * FROM questions WHERE id = ($1)",
+        [questionId]
+      );
+      conn.release();
+
+      return result.rows[0];
+    } catch (error) {
+      throw new Error(`Unable to retrieve question by ID: ${error}`);
+    }
+  }
+
+  async updateQuestionById(
+    questionId: string,
+    q: Question
+  ): Promise<QuestionResponse | null> {
+    try {
+      const { question, optionA, optionB, optionC, optionD } = q;
+      const conn = await db.connect();
+      const result = await conn.query(
+        "UPDATE questions SET question = ($1), option_a = ($2), option_b = ($3), option_c = ($4), option_d = ($5) WHERE id = ($6) RETURNING *",
+        [question, optionA, optionB, optionC, optionD, questionId]
+      );
+      conn.release();
+
+      return result.rows[0];
+    } catch (error) {
+      throw new Error(`Unable to update question by ID: ${error}`);
+    }
+  }
+
   async getAll(userid: string): Promise<Kwiz[]> {
     try {
       const conn = await db.connect();
@@ -119,4 +163,14 @@ export class KwizStore {
       throw new Error(`Unable to delete Kwiz by ID: ${error}`);
     }
   }
+}
+
+interface QuestionResponse {
+  id: string;
+  kwiz_id: string;
+  question: string;
+  optionA: string;
+  optionB: string;
+  optionC: string;
+  optionD: string;
 }

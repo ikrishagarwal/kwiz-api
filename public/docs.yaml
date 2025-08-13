@@ -116,7 +116,7 @@ paths:
   /auth:
     description: Get a JWT token for user authentication and also creates a new user if it doesn't exists already
     post:
-      summary: Authenticate user
+      summary: Get a JWT token
       requestBody:
         required: true
         content:
@@ -145,23 +145,41 @@ paths:
                   token:
                     type: string
                     format: jwt
-        "201":
-          description: User created successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  email:
-                    type: string
-                    format: email
-                  token:
-                    type: string
-                    format: jwt
         "401":
           description: Invalid credentials
         "400":
           description: Bad request
+        "500":
+          description: Internal server error
+
+  /signup:
+    description: Sign Up for a new email and password
+    post:
+      summary: Create a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+      responses:
+        "201":
+          description: User created successfully
+        "400":
+          description: Invalid credentials
+        "409":
+          description: User is already signed up
+        "500":
+          description: Internal Server Error
+
   /kwizes:
     description: Get all kwizes for a user
     get:
@@ -294,5 +312,84 @@ paths:
           description: Unauthorized
         "404":
           description: Kwiz not found
+        "500":
+          description: Internal server error
+
+  /questions/{id}:
+    get:
+      description: "Get a question by it's id"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+
+      security:
+        - bearerAuth: []
+
+      responses:
+        "200":
+          description: Successfully retrieved the question
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuestionResponse"
+        "404":
+          description: Question not found
+        "500":
+          description: Internal server Error
+
+    delete:
+      description: "Delete a question by ID"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+
+      security:
+        - bearerAuth: []
+
+      responses:
+        "204":
+          description: Successfully deleted the question
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Question not found
+        "500":
+          description: Internal server error
+
+    put:
+      description: "Edit an existing question by ID"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Question"
+
+      security:
+        - bearerAuth: []
+
+      responses:
+        "200":
+          description: Successfully edited the question
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Question not found
         "500":
           description: Internal server error

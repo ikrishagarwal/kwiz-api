@@ -1,8 +1,16 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
 
-export default async (request: VercelRequest, response: VercelResponse) => {
+export default async (_: VercelRequest, response: VercelResponse) => {
   response.status(200).json({
-    message: `Hello from Vercel! You made a ${request.method} request.`,
-    timestamp: new Date().toISOString(),
+    message: "Welcome to the Kwiz API!",
+    paths: [
+      "/signup",
+      "/auth",
+      "/password",
+      "/kwizes",
+      "/kwizes/id",
+      "/questions/id",
+    ],
+    tip: "Go to `/` for a Swagger UI interface for testing this API",
   });
 };

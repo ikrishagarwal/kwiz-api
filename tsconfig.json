@@ -32,6 +32,8 @@
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "exactOptionalPropertyTypes": false,
-    "noImplicitOverride": true
+    "noImplicitOverride": true,
+    "importsNotUsedAsValues": "remove",
+    "preserveValueImports": false
   }
 }

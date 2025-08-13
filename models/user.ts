@@ -64,6 +64,21 @@ export class UserStore {
     }
   }
 
+  async updatePassword(id: string, newPassword: string): Promise<User | null> {
+    try {
+      const conn = await db.connect();
+      const hash = await bcrypt.hash(newPassword, 10);
+      const result = await conn.query(
+        "UPDATE users SET password = $1 WHERE id = $2 RETURNING *",
+        [hash, id]
+      );
+      conn.release();
+      return result.rows[0];
+    } catch (error) {
+      throw new Error(`Unable to update password: ${error}`);
+    }
+  }
+
   generateToken({ id, email }: User): string {
     return jwt.sign({ id, email }, process.env.JWT_SECRET!, {
       expiresIn: "1d",
