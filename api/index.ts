@@ -4,12 +4,12 @@ export default async (_: VercelRequest, response: VercelResponse) => {
   response.status(200).json({
     message: "Welcome to the Kwiz API!",
     paths: [
-      "/signup",
-      "/auth",
-      "/password",
-      "/kwizes",
-      "/kwizes/id",
-      "/questions/id",
+      "/api/signup",
+      "/api/auth",
+      "/api/password",
+      "/api/kwizes",
+      "/api/kwizes/[id]",
+      "/api/questions/[id]",
     ],
     tip: "Go to `/` for a Swagger UI interface for testing this API",
   });

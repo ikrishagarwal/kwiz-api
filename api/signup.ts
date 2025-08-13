@@ -46,6 +46,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     await userStore.create(email, password);
     response.status(201).json({ message: "User created successfully" });
   } catch (error) {
+    console.error(error);
     response.status(500).json({ error: "Internal Server Error" });
   }
 };

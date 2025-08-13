@@ -32,7 +32,8 @@ export default async function (
             .json({ email: authedUser.email, token })
             .end();
         }
-      } catch {
+      } catch (error) {
+        console.error(error);
         return response
           .status(401)
           .json({ error: "Invalid credentials" })
@@ -45,7 +46,8 @@ export default async function (
         .end();
       return;
     }
-  } catch {
+  } catch (error) {
+    console.error(error);
     return response //
       .status(500)
       .json({ error: "Internal server error" })

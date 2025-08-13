@@ -31,7 +31,8 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       try {
         const kwizes = await store.getAll(user.id);
         response.status(200).json(kwizes).end();
-      } catch {
+      } catch (error) {
+        console.error(error);
         response.status(500).json({ error: "Failed to retrieve kwizes" });
       }
       break;

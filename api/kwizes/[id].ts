@@ -43,7 +43,8 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       try {
         const kwiz = await kwizStore.getById(id);
         response.status(200).json(kwiz).end();
-      } catch {
+      } catch (error) {
+        console.error(error);
         response //
           .status(500)
           .json({ error: "Failed to retrieve Kwiz owner" })

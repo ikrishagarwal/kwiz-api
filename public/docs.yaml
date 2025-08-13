@@ -6,7 +6,7 @@ info:
   description: API for Kwiz platform
 
 servers:
-  - url: http://localhost:3000/api
+  - url: /api
 
 components:
   schemas:
@@ -114,7 +114,6 @@ components:
 
 paths:
   /auth:
-    description: Get a JWT token for user authentication and also creates a new user if it doesn't exists already
     post:
       summary: Get a JWT token
       requestBody:
@@ -123,7 +122,6 @@ paths:
           application/json:
             schema:
               type: object
-              required: [email, password]
               properties:
                 email:
                   type: string
@@ -131,9 +129,12 @@ paths:
                 password:
                   type: string
                   format: password
+              required:
+                - email
+                - password
       responses:
         "200":
-          description: Successful authentication
+          description: Successfully authenticated
           content:
             application/json:
               schema:
@@ -153,7 +154,6 @@ paths:
           description: Internal server error
 
   /signup:
-    description: Sign Up for a new email and password
     post:
       summary: Create a new user
       requestBody:
@@ -181,18 +181,29 @@ paths:
           description: Internal Server Error
 
   /kwizes:
-    description: Get all kwizes for a user
     get:
-      summary: Get kwizes for a user
+      summary: Get all Kwizes made by you
       security:
         - bearerAuth: []
       responses:
         "200":
-          description: OK
+          description: List of Kwizes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    kwiz_id:
+                      type: string
+                    id:
+                      type: string
         "400":
-          description: Insufficient data
+          description: Insufficient/Invalid data
         "500":
           description: Internal server error
+
     post:
       summary: Create a new kwiz
       security:
@@ -204,7 +215,7 @@ paths:
               $ref: "#/components/schemas/Kwizes"
       responses:
         "201":
-          description: Created
+          description: Successfully created a new user
           content:
             application/json:
               schema:
@@ -234,7 +245,7 @@ paths:
 
   /kwizes/{id}:
     get:
-      description: "Get a specific Kwiz by ID"
+      summary: Get a specific Kwiz by ID
       parameters:
         - in: path
           name: id
@@ -255,12 +266,12 @@ paths:
         "401":
           description: Unauthorized
         "403":
-          description: Forbidden
+          description: Forbidden, you don't have kwiz access
         "500":
           description: Internal server error
 
     delete:
-      description: "Delete a specific Kwiz by ID"
+      summary: Delete a specific Kwiz by ID
       parameters:
         - in: path
           name: id
@@ -282,7 +293,7 @@ paths:
           description: Internal server error
 
     post:
-      description: "Add a question to a Kwiz by ID"
+      summary: Add a question to a Kwiz by ID
       parameters:
         - in: path
           name: id
@@ -317,7 +328,7 @@ paths:
 
   /questions/{id}:
     get:
-      description: "Get a question by it's id"
+      summary: Get a question by it's ID
       parameters:
         - in: path
           name: id
@@ -341,7 +352,7 @@ paths:
           description: Internal server Error
 
     delete:
-      description: "Delete a question by ID"
+      summary: Delete a question by ID
       parameters:
         - in: path
           name: id
@@ -358,14 +369,14 @@ paths:
         "401":
           description: Unauthorized
         "403":
-          description: Forbidden
+          description: Forbidden, you can't access the question
         "404":
           description: Question not found
         "500":
           description: Internal server error
 
     put:
-      description: "Edit an existing question by ID"
+      summary: Edit an existing question by ID
       parameters:
         - in: path
           name: id
@@ -388,7 +399,7 @@ paths:
         "401":
           description: Unauthorized
         "403":
-          description: Forbidden
+          description: Forbidden, you can't access the question
         "404":
           description: Question not found
         "500":
