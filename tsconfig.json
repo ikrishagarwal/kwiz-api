@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "ESNext",
+    "module": "CommonJs",
     "removeComments": true,
     "allowSyntheticDefaultImports": true,
     "alwaysStrict": true,
@@ -15,7 +16,6 @@
     "incremental": true,
     "lib": ["esnext"],
     "outDir": "dist",
-    "module": "CommonJS",
     "newLine": "lf",
     "noEmitHelpers": false,
     "noFallthroughCasesInSwitch": true,
@@ -24,7 +24,6 @@
     "noUnusedParameters": true,
     "preserveConstEnums": true,
     "pretty": true,
-    "resolveJsonModule": true,
     "sourceMap": true,
     "strict": true,
     "useDefineForClassFields": true,
