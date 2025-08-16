@@ -3,7 +3,10 @@ openapi: "3.0.3"
 info:
   title: Kwiz API
   version: "1.0"
-  description: API for Kwiz platform
+  description: |-
+    An API for creating and managing quizzes, which supports sign up and authentication.
+
+    [Give it a star on github](https://github.com/ikrishagarwal/kwiz-api)
 
 servers:
   - url: /api
@@ -112,10 +115,15 @@ components:
       scheme: bearer
       bearerFormat: JWT
 
+tags:
+  - name: v1
+    description: First rollout
+
 paths:
   /auth:
     post:
       summary: Get a JWT token
+      tags: [v1]
       requestBody:
         required: true
         content:
@@ -156,6 +164,7 @@ paths:
   /signup:
     post:
       summary: Create a new user
+      tags: [v1]
       requestBody:
         required: true
         content:
@@ -183,6 +192,7 @@ paths:
   /kwizes:
     get:
       summary: Get all Kwizes made by you
+      tags: [v1]
       security:
         - bearerAuth: []
       responses:
@@ -206,6 +216,7 @@ paths:
 
     post:
       summary: Create a new kwiz
+      tags: [v1]
       security:
         - bearerAuth: []
       requestBody:
@@ -246,6 +257,7 @@ paths:
   /kwizes/{id}:
     get:
       summary: Get a specific Kwiz by ID
+      tags: [v1]
       parameters:
         - in: path
           name: id
@@ -272,6 +284,7 @@ paths:
 
     delete:
       summary: Delete a specific Kwiz by ID
+      tags: [v1]
       parameters:
         - in: path
           name: id
@@ -294,6 +307,7 @@ paths:
 
     post:
       summary: Add a question to a Kwiz by ID
+      tags: [v1]
       parameters:
         - in: path
           name: id
@@ -329,6 +343,7 @@ paths:
   /questions/{id}:
     get:
       summary: Get a question by it's ID
+      tags: [v1]
       parameters:
         - in: path
           name: id
@@ -353,6 +368,7 @@ paths:
 
     delete:
       summary: Delete a question by ID
+      tags: [v1]
       parameters:
         - in: path
           name: id
@@ -377,6 +393,7 @@ paths:
 
     put:
       summary: Edit an existing question by ID
+      tags: [v1]
       parameters:
         - in: path
           name: id

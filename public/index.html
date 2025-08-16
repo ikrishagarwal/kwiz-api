@@ -2,7 +2,11 @@
 <html>
   <head>
     <title>Kwiz API Docs</title>
-    <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist/swagger-ui.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/swagger-ui-dist/swagger-ui.css"
+    />
+    <link rel="stylesheet" href="swagger.css" />
   </head>
   <body>
     <div id="swagger-ui"></div>
@@ -10,8 +14,8 @@
     <script>
       window.onload = () => {
         SwaggerUIBundle({
-          url: '/docs.yaml',
-          dom_id: '#swagger-ui',
+          url: "/docs.yaml",
+          dom_id: "#swagger-ui",
         });
       };
     </script>
