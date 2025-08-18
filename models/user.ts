@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { db } from "../lib/db";
+import { db } from "../lib/db.js";
+import { nanoid } from "nanoid";
 
 export type User = {
   id: string;
@@ -27,7 +28,7 @@ export class UserStore {
 
   async create(email: string, password: string): Promise<User> {
     try {
-      const { nanoid } = await import("nanoid");
+      // const { nanoid } = await import("anoid");
       const conn = await db.connect();
       const hash = await bcrypt.hash(password, 10);
       const id = nanoid();

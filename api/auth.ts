@@ -1,5 +1,5 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
-import { UserStore } from "../models/user";
+import { UserStore } from "../models/user.js";
 
 const store = new UserStore();
 

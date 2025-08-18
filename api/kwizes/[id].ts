@@ -1,6 +1,6 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
-import { UserStore } from "../../models/user";
-import { KwizStore, Question } from "../../models/kwiz";
+import { UserStore } from "../../models/user.js";
+import { KwizStore, Question } from "../../models/kwiz.js";
 
 const userStore = new UserStore();
 const kwizStore = new KwizStore();

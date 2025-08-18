@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "module": "CommonJs",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "removeComments": true,
     "allowSyntheticDefaultImports": true,
     "alwaysStrict": true,

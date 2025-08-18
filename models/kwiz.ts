@@ -1,4 +1,5 @@
-import { db } from "../lib/db";
+import { db } from "../lib/db.js";
+import { nanoid } from "nanoid";
 
 export type Kwiz = {
   userid: string;
@@ -20,7 +21,7 @@ export class KwizStore {
   ): Promise<{ kwiz_id: string; questions: Question[] }> {
     try {
       const conn = await db.connect();
-      const { nanoid } = await import("nanoid");
+      // const { nanoid } = await import("nanoid");
       const kwizId = nanoid();
 
       const createdKwiz = await conn.query(
@@ -51,7 +52,7 @@ export class KwizStore {
 
   async addQuestion(kwizId: string, q: Question): Promise<Question> {
     try {
-      const { nanoid } = await import("nanoid");
+      // const { nanoid } = await import("nanoid");
       const { question, optionA, optionB, optionC, optionD } = q;
       const conn = await db.connect();
       const result = await conn.query(

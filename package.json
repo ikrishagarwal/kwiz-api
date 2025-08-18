@@ -5,6 +5,7 @@
   "author": "Krish",
   "license": "ISC",
   "private": true,
+  "type": "module",
   "scripts": {
     "serve": "vercel dev",
     "build": "tsc",
